@@ -10,10 +10,12 @@
 	keeps trimming one file at a time as needed.
 	- gMSA-LogCleanUp has been created and assigned permissions to the 
 	permissions of the archive folder.
-	- schtasks /change /TN \Archive_EDrive_Log_Deletion /RU encap\gMSA-LogCleanUp$ /RP
-	can be run after task creation to change the ownership of the task to 
-	a gMSA. 
 
+	To register the gMSA with the scheduled task run: 
+	
+	$principal = New-ScheduledTaskPrincipal -UserId "ENCAP\gMSA-LogCleanUp$" -LogonType Password -RunLevel Limited
+	Set-ScheduledTask -TaskName "\Archive_EDrive_Log_Deletion" -Principal $principal
+	
 Mark Killen 07-16-2026
 #>
 
