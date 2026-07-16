@@ -12,9 +12,16 @@
 	permissions of the archive folder.
 
 	To register the gMSA with the scheduled task run: 
-	
+
+	New-ADServiceAccount -name "gMSA-LogCleanUp" -DNSHostName "gMSA-LogCleanUp.encap.local" -Enabled $True -PrincipalsAllowedToRetrieveManagedPassword "CPI-DC2$","CPI-DC4$"
+	Install-ADServiceAccount -Identity gMSA-LogCleanUp
+	#Create scheduled task then run 
 	$principal = New-ScheduledTaskPrincipal -UserId "ENCAP\gMSA-LogCleanUp$" -LogonType Password -RunLevel Limited
 	Set-ScheduledTask -TaskName "\Archive_EDrive_Log_Deletion" -Principal $principal
+
+	gMSA might need BOTH logon as batch job and logon as service rights
+	through locl security policy. In enterprise enviroments this is 
+	likely managed through GP
 	
 Mark Killen 07-16-2026
 #>
